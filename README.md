@@ -188,6 +188,10 @@
 python tools/rcon.py "miao test 你好世界" "say 你好世界"
 ```
 
+## 开发说明
+
+本项目由 AI 主导开发（需求定义、方案取舍与验收由作者把关），所有提交记录都带有 `Assisted-by: AI (WorkBuddy)` 标记。
+
 ## License
 
 MIT
