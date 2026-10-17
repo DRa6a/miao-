@@ -190,4 +190,4 @@ python tools/rcon.py "miao test 你好世界" "say 你好世界"
 
 ## License
 
-CC0-1.0
+MIT
