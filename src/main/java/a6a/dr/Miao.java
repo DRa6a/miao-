@@ -1,27 +1,39 @@
 package a6a.dr;
 
+import a6a.dr.command.MiaoCommand;
+import a6a.dr.config.ConfigManager;
+import a6a.dr.core.MessageProcessor;
 import net.fabricmc.api.ModInitializer;
-
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.resources.Identifier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 喵~ —— 给服务器里的消息加上插入语的服务端模组。
+ */
 public class Miao implements ModInitializer {
-	public static final String MOD_ID = "miao";
 
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
+	public static final String MOD_ID = "miao";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+		ConfigManager.load();
 
-		LOGGER.info("Hello Fabric world!");
+		CommandRegistrationCallback.EVENT.register(
+				(dispatcher, registryAccess, environment) -> MiaoCommand.register(dispatcher));
+
+		// /reload 之后顺手重新读一遍配置
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
+			if (success) {
+				ConfigManager.load();
+				MessageProcessor.resetCounters();
+			}
+		});
+
+		LOGGER.info("喵~ 已加载，配置文件：{}", ConfigManager.path());
 	}
 
 	public static Identifier id(String path) {
