@@ -2,32 +2,22 @@
 	"schemaVersion": 1,
 	"id": "miao",
 	"version": "${version}",
-	"name": "miao~",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Miao~",
+	"description": "服务端消息插入语模组：给聊天、死亡、进退服、进度提示按需插入“喵”，支持每玩家独立配置，也允许玩家在聊天里自带插入语。",
 	"authors": [
-		"Me!"
+		"a6a.dr"
 	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
+	"contact": {},
 	"license": "CC0-1.0",
 	"icon": "assets/miao/icon.png",
-	"environment": "*",
+	"environment": "server",
 	"entrypoints": {
 		"main": [
 			"a6a.dr.Miao"
-		],
-		"client": [
-			"a6a.dr.client.MiaoClient"
 		]
 	},
 	"mixins": [
-		"miao.mixins.json",
-		{
-			"config": "miao.client.mixins.json",
-			"environment": "client"
-		}
+		"miao.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.5",

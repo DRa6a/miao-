@@ -12,12 +12,10 @@ repositories {
 }
 
 loom {
-	splitEnvironmentSourceSets()
-
+	// 纯服务端模组：不需要拆分 client / main 源集
 	mods {
 		"miao" {
 			sourceSet sourceSets.main
-			sourceSet sourceSets.client
 		}
 	}
 }
