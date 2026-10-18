@@ -40,7 +40,12 @@ public final class ConfigManager {
         return config;
     }
 
-    public static void load() {
+    /**
+     * 读取配置。文件不存在时会生成一份默认配置。
+     *
+     * @return 是否成功读到/生成了配置；失败时保留上一份配置
+     */
+    public static boolean load() {
         Path file = path();
         CACHE.clear();
         if (!Files.exists(file)) {
@@ -49,7 +54,7 @@ public final class ConfigManager {
             config = fresh;
             save();
             Miao.LOGGER.info("已生成默认配置：{}", file);
-            return;
+            return true;
         }
         try (Reader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             MiaoConfig loaded = MiaoConfig.GSON.fromJson(reader, MiaoConfig.class);
@@ -59,8 +64,10 @@ public final class ConfigManager {
             loaded.normalize();
             config = loaded;
             Miao.LOGGER.info("已加载配置：{}", file);
+            return true;
         } catch (Exception e) {
             Miao.LOGGER.error("配置读取失败，继续使用上一份配置：{}", file, e);
+            return false;
         }
     }
 
@@ -73,6 +80,9 @@ public final class ConfigManager {
             }
         } catch (IOException e) {
             Miao.LOGGER.error("配置写入失败：{}", file, e);
+        } finally {
+            // 自己写盘不算"外部修改"，更新热加载的基准
+            ConfigWatcher.syncBaseline();
         }
     }
 

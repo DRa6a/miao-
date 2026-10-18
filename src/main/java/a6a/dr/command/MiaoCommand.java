@@ -1,6 +1,7 @@
 package a6a.dr.command;
 
 import a6a.dr.config.ConfigManager;
+import a6a.dr.config.ConfigWatcher;
 import a6a.dr.config.MiaoConfig;
 import a6a.dr.core.InsertPos;
 import a6a.dr.core.MarkerParser;
@@ -121,8 +122,13 @@ public final class MiaoCommand {
     }
 
     private static int reload(CommandSourceStack source) {
-        ConfigManager.load();
+        boolean ok = ConfigManager.load();
+        ConfigWatcher.syncBaseline();
         MessageProcessor.resetCounters();
+        if (!ok) {
+            source.sendFailure(Component.literal("配置读取失败，已保留上一份配置，详见控制台"));
+            return 0;
+        }
         source.sendSuccess(() -> Component.literal("喵~ 配置已重新加载"), true);
         return 1;
     }

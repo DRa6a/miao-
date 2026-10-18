@@ -27,6 +27,9 @@ public final class MiaoConfig {
     /** 调试日志：把每条被处理的消息、匹配到的位置打到控制台。 */
     public boolean debug = false;
 
+    /** 配置文件被外部修改后是否自动热加载。 */
+    public boolean autoReload = true;
+
     /** 全局默认档。 */
     public Profile defaults = Profile.defaults();
 

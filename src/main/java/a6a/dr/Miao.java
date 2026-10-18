@@ -2,6 +2,7 @@ package a6a.dr;
 
 import a6a.dr.command.MiaoCommand;
 import a6a.dr.config.ConfigManager;
+import a6a.dr.config.ConfigWatcher;
 import a6a.dr.core.MessageProcessor;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -32,6 +33,10 @@ public class Miao implements ModInitializer {
 				MessageProcessor.resetCounters();
 			}
 		});
+
+		// 配置文件热加载：服务器起来后开始盯着 config/miao.json
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> ConfigWatcher.start());
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> ConfigWatcher.stop());
 
 		LOGGER.info("喵~ 已加载，配置文件：{}", ConfigManager.path());
 	}
